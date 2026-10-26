@@ -1,15 +1,20 @@
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Frontend files (HTML, CSS, JS) ko serve karne ke liye
+app.use(express.static(path.join(__dirname, 'public')));
+
 const upload = multer({ dest: 'uploads/' });
 
+// Agar koi home page khole toh frontend ki main file dikhe
 app.get('/', (req, res) => {
-    res.send("ToolsHub Backend is Running!");
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.post('/api/process-pdf', upload.single('file'), (req, res) => {
