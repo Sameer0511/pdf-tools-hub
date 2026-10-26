@@ -7,14 +7,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Frontend files (HTML, CSS, JS) ko serve karne ke liye
-app.use(express.static(path.join(__dirname, 'public')));
+// Main folder ko hi static files ke liye set kar rahe hain
+app.use(express.static(__dirname));
 
 const upload = multer({ dest: 'uploads/' });
 
-// Agar koi home page khole toh frontend ki main file dikhe
+// Root URL par index.html serve karega
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.post('/api/process-pdf', upload.single('file'), (req, res) => {
