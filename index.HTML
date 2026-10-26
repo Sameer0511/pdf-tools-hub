@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolsHub.io - All-in-One Free PDF & Image Tools</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- All Required Libraries -->
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/browser-image-compression/2.0.2/browser-image-compression.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <div class="glow-bg glow-1"></div>
+    <div class="glow-bg glow-2"></div>
+
+    <header>
+        <div class="logo">ToolsHub<span>.io</span></div>
+        <nav>
+            <a href="#" onclick="switchTool('home')" class="nav-link active">Dashboard</a>
+            <a href="#" onclick="switchTool('merge')" class="nav-link">PDF Tools</a>
+            <a href="#" onclick="switchTool('word2pdf')" class="nav-link">Converters</a>
+        </nav>
+    </header>
+
+    <div class="ad-banner top-ad"><p>-- Google AdSense Banner Space --</p></div>
+
+    <main class="main-layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h3>📂 Organize PDF</h3>
+            <button class="tool-btn active" onclick="switchTool('home')">🏠 Dashboard</button>
+            <button class="tool-btn" onclick="switchTool('merge')">📂 Merge PDF</button>
+            <button class="tool-btn" onclick="switchTool('split')">✂️ Split PDF</button>
+            <button class="tool-btn" onclick="switchTool('rotate')">🔄 Rotate PDF</button>
+            
+            <h3>⚡ Optimize & Edit</h3>
+            <button class="tool-btn" onclick="switchTool('compress')">⚡ Compress PDF/Image</button>
+            <button class="tool-btn" onclick="switchTool('watermark')">✍️ Add Watermark</button>
+
+            <h3>🔄 Convert to PDF</h3>
+            <button class="tool-btn" onclick="switchTool('img2pdf')">📄 JPG to PDF</button>
+            <button class="tool-btn" onclick="switchTool('word2pdf')">📝 WORD to PDF</button>
+            <button class="tool-btn" onclick="switchTool('excel2pdf')">📊 EXCEL to PDF</button>
+
+            <h3>🛡️ Security & Others</h3>
+            <button class="tool-btn" onclick="switchTool('protect')">🔒 Protect PDF</button>
+            <button class="tool-btn" onclick="switchTool('wordcount')">📝 Word Counter</button>
+        </aside>
+
+        <!-- WORKSPACE -->
+        <section class="workspace">
+
+            <!-- HOME -->
+            <div id="section-home" class="tool-section">
+                <div class="hero-text">
+                    <h1>Complete PDF & File Toolkit</h1>
+                    <p>Fast, 100% Free, Secure Client-Side Tools.</p>
+                </div>
+                <div class="cards-grid">
+                    <div class="tool-card" onclick="switchTool('merge')"><span class="card-icon">📂</span><h3>Merge PDF</h3><p>Combine multiple PDFs.</p></div>
+                    <div class="tool-card" onclick="switchTool('split')"><span class="card-icon">✂️</span><h3>Split PDF</h3><p>Extract or split pages.</p></div>
+                    <div class="tool-card" onclick="switchTool('word2pdf')"><span class="card-icon">📝</span><h3>WORD to PDF</h3><p>Convert DOCX files.</p></div>
+                    <div class="tool-card" onclick="switchTool('excel2pdf')"><span class="card-icon">📊</span><h3>EXCEL to PDF</h3><p>Convert spreadsheets.</p></div>
+                    <div class="tool-card" onclick="switchTool('compress')"><span class="card-icon">⚡</span><h3>Compress</h3><p>Reduce file sizes.</p></div>
+                    <div class="tool-card" onclick="switchTool('protect')"><span class="card-icon">🔒</span><h3>Protect PDF</h3><p>Lock with password.</p></div>
+                </div>
+            </div>
+
+            <!-- MERGE -->
+            <div id="section-merge" class="tool-section" style="display: none;">
+                <h2>Merge PDF Files</h2>
+                <div class="upload-zone" onclick="document.getElementById('mergeInput').click()">
+                    <input type="file" id="mergeInput" accept="application/pdf" multiple style="display: none;" />
+                    <span class="upload-icon">📂</span>
+                    <p id="mergeFileName">Select multiple PDF files</p>
+                </div>
+                <button class="action-btn" onclick="mergePDFs()">Merge PDFs ⚡</button>
+            </div>
+
+            <!-- SPLIT -->
+            <div id="section-split" class="tool-section" style="display: none;">
+                <h2>Split PDF File</h2>
+                <div class="upload-zone" onclick="document.getElementById('splitInput').click()">
+                    <input type="file" id="splitInput" accept="application/pdf" style="display: none;" />
+                    <span class="upload-icon">✂️</span>
+                    <p id="splitFileName">Select a PDF file</p>
+                </div>
+                <button class="action-btn" onclick="splitPDF()">Extract First Page 🚀</button>
+            </div>
+
+            <!-- ROTATE -->
+            <div id="section-rotate" class="tool-section" style="display: none;">
+                <h2>Rotate PDF Pages</h2>
+                <div class="upload-zone" onclick="document.getElementById('rotateInput').click()">
+                    <input type="file" id="rotateInput" accept="application/pdf" style="display: none;" />
+                    <span class="upload-icon">🔄</span>
+                    <p id="rotateFileName">Select PDF file</p>
+                </div>
+                <button class="action-btn" onclick="rotatePDF()">Rotate 90° 🔄</button>
+            </div>
+
+            <!-- COMPRESS -->
+            <div id="section-compress" class="tool-section" style="display: none;">
+                <h2>Compress Image Size</h2>
+                <div class="upload-zone" onclick="document.getElementById('compInput').click()">
+                    <input type="file" id="compInput" accept="image/*" style="display: none;" />
+                    <span class="upload-icon">⚡</span>
+                    <p id="compFileName">Select an Image</p>
+                </div>
+                <button class="action-btn" onclick="compressImageFile()">Compress Image 📉</button>
+                <p id="compResult" style="margin-top: 15px; color: #00f2fe; font-weight: bold;"></p>
+            </div>
+
+            <!-- WATERMARK -->
+            <div id="section-watermark" class="tool-section" style="display: none;">
+                <h2>Add Watermark</h2>
+                <div class="upload-zone" onclick="document.getElementById('watermarkInput').click()">
+                    <input type="file" id="watermarkInput" accept="application/pdf" style="display: none;" />
+                    <span class="upload-icon">✍️</span>
+                    <p id="watermarkFileName">Select PDF file</p>
+                </div>
+                <input type="text" id="watermarkText" class="custom-input" placeholder="Enter Watermark Text" />
+                <button class="action-btn" style="margin-top: 15px;" onclick="addWatermarkPDF()">Apply Watermark ✍️</button>
+            </div>
+
+            <!-- IMG TO PDF -->
+            <div id="section-img2pdf" class="tool-section" style="display: none;">
+                <h2>JPG to PDF Converter</h2>
+                <div class="upload-zone" onclick="document.getElementById('imgInput').click()">
+                    <input type="file" id="imgInput" accept="image/*" style="display: none;" />
+                    <span class="upload-icon">📁</span>
+                    <p id="imgFileName">Click here to upload image</p>
+                </div>
+                <button class="action-btn" onclick="convertToPDF()">Convert to PDF 🚀</button>
+            </div>
+
+            <!-- WORD TO PDF -->
+            <div id="section-word2pdf" class="tool-section" style="display: none;">
+                <h2>WORD to PDF Converter</h2>
+                <div class="upload-zone" onclick="document.getElementById('wordInput').click()">
+                    <input type="file" id="wordInput" accept=".docx" style="display: none;" />
+                    <span class="upload-icon">📝</span>
+                    <p id="wordFileName">Select Word (.docx) file</p>
+                </div>
+                <button class="action-btn" onclick="convertWordToPDF()">Convert to PDF 🚀</button>
+            </div>
+
+            <!-- EXCEL TO PDF -->
+            <div id="section-excel2pdf" class="tool-section" style="display: none;">
+                <h2>EXCEL to PDF Converter</h2>
+                <div class="upload-zone" onclick="document.getElementById('excelInput').click()">
+                    <input type="file" id="excelInput" accept=".xlsx, .xls" style="display: none;" />
+                    <span class="upload-icon">📊</span>
+                    <p id="excelFileName">Select Excel (.xlsx) file</p>
+                </div>
+                <button class="action-btn" onclick="convertExcelToPDF()">Convert to PDF 🚀</button>
+            </div>
+
+            <!-- PROTECT PDF -->
+            <div id="section-protect" class="tool-section" style="display: none;">
+                <h2>Protect PDF with Password</h2>
+                <div class="upload-zone" onclick="document.getElementById('protectInput').click()">
+                    <input type="file" id="protectInput" accept="application/pdf" style="display: none;" />
+                    <span class="upload-icon">🔒</span>
+                    <p id="protectFileName">Select PDF file</p>
+                </div>
+                <input type="password" id="pdfPassword" class="custom-input" placeholder="Enter Password" />
+                <button class="action-btn" style="margin-top: 15px;" onclick="protectPDF()">Lock PDF 🔒</button>
+            </div>
+
+            <!-- WORD COUNTER -->
+            <div id="section-wordcount" class="tool-section" style="display: none;">
+                <h2>Word & Character Counter</h2>
+                <textarea id="textArea" placeholder="Type or paste text here..." oninput="countText()"></textarea>
+                <div class="stats-container">
+                    <div class="stat-box">Words: <span id="wCount">0</span></div>
+                    <div class="stat-box">Characters: <span id="cCount">0</span></div>
+                </div>
+            </div>
+
+        </section>
+
+        <aside class="ad-banner side-ad"><p>-- Google AdSense Sidebar --</p></aside>
+    </main>
+
+    <div class="ad-banner bottom-ad"><p>-- Google AdSense Bottom Ad --</p></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
