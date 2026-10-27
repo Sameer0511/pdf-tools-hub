@@ -7,14 +7,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Main folder ko hi static files ke liye set kar rahe hain
+// Main folder aur static files ke liye setup
 app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'Smart-Tool-Website')));
 
 const upload = multer({ dest: 'uploads/' });
 
-// Root URL par index.html serve karega
+// Root URL par index.html serve karega (Fallback ke sath)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'), (err) => {
+        if (err) {
+            // Agar pehle path par na mile toh Smart-Tool-Website folder se utha lega
+            res.sendFile(path.join(__dirname, 'Smart-Tool-Website', 'index.html'), (err2) => {
+                if (err2) {
+                    res.status(404).send('index.html not found!');
+                }
+            });
+        }
+    });
 });
 
 app.post('/api/process-pdf', upload.single('file'), (req, res) => {
