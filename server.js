@@ -16,17 +16,33 @@ try {
     console.log("Error reading directory:", e.message);
 }
 
+// Case-sensitivity fix middleware (Agar koi style.css maange aur server par style.CSS ho)
+app.use((req, res, next) => {
+    if (req.url === '/style.css') {
+        const filePath = path.join(__dirname, 'style.CSS');
+        if (fs.existsSync(filePath)) {
+            return res.sendFile(filePath);
+        }
+    }
+    if (req.url === '/script.js') {
+        const filePath = path.join(__dirname, 'script.js');
+        if (fs.existsSync(filePath)) {
+            return res.sendFile(filePath);
+        }
+    }
+    next();
+});
+
 // Main folder aur static files ke liye setup
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'Smart-Tool-Website')));
 
 const upload = multer({ dest: 'uploads/' });
 
-// Root URL par index.html / index.HTML serve karega (Fallback ke sath)
+// Root URL par index.HTML / index.html serve karega
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.HTML'), (err) => {
         if (err) {
-            // Agar capital HTML na mile toh chote letters wala try karega
             res.sendFile(path.join(__dirname, 'index.html'), (err2) => {
                 if (err2) {
                     res.status(404).send('index.html not found! Please check logs.');
