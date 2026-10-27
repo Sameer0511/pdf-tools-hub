@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToolsHub.io - All-in-One Free PDF & Image Tools</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- CSS versioning add kar di hai taaki caching ki problem na aaye -->
+    <link rel="stylesheet" href="style.css?v=2">
     
     <!-- All Required Libraries -->
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
@@ -171,7 +172,6 @@
                     <span class="upload-icon">🔒</span>
                     <p id="protectFileName">Select PDF file</p>
                 </div>
-                <input type="password" id="pdfPassword" class="custom-input" placeholder="Enter Password" />
                 <button class="action-btn" style="margin-top: 15px;" onclick="protectPDF()">Lock PDF 🔒</button>
             </div>
 
