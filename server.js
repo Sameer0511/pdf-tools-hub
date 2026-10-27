@@ -2,10 +2,19 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Render par files check karne ke liye debug logs
+console.log("Current Directory:", __dirname);
+try {
+    console.log("Files available:", fs.readdirSync(__dirname));
+} catch (e) {
+    console.log("Error reading directory:", e.message);
+}
 
 // Main folder aur static files ke liye setup
 app.use(express.static(__dirname));
@@ -20,7 +29,7 @@ app.get('/', (req, res) => {
             // Agar pehle path par na mile toh Smart-Tool-Website folder se utha lega
             res.sendFile(path.join(__dirname, 'Smart-Tool-Website', 'index.html'), (err2) => {
                 if (err2) {
-                    res.status(404).send('index.html not found!');
+                    res.status(404).send('index.html not found! Please check logs.');
                 }
             });
         }
