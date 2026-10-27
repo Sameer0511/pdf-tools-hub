@@ -22,12 +22,12 @@ app.use(express.static(path.join(__dirname, 'Smart-Tool-Website')));
 
 const upload = multer({ dest: 'uploads/' });
 
-// Root URL par index.html serve karega (Fallback ke sath)
+// Root URL par index.html / index.HTML serve karega (Fallback ke sath)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'), (err) => {
+    res.sendFile(path.join(__dirname, 'index.HTML'), (err) => {
         if (err) {
-            // Agar pehle path par na mile toh Smart-Tool-Website folder se utha lega
-            res.sendFile(path.join(__dirname, 'Smart-Tool-Website', 'index.html'), (err2) => {
+            // Agar capital HTML na mile toh chote letters wala try karega
+            res.sendFile(path.join(__dirname, 'index.html'), (err2) => {
                 if (err2) {
                     res.status(404).send('index.html not found! Please check logs.');
                 }
