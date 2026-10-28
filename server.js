@@ -16,15 +16,15 @@ try {
     console.log("Error reading directory:", e.message);
 }
 
-// Case-sensitivity fix middleware (Agar koi style.css maange aur server par style.CSS ho)
+// Case-sensitivity fix middleware (req.path use karne se query string (?v=2) ki problem khatam)
 app.use((req, res, next) => {
-    if (req.url === '/style.css') {
+    if (req.path === '/style.css') {
         const filePath = path.join(__dirname, 'style.CSS');
         if (fs.existsSync(filePath)) {
             return res.sendFile(filePath);
         }
     }
-    if (req.url === '/script.js') {
+    if (req.path === '/script.js') {
         const filePath = path.join(__dirname, 'script.js');
         if (fs.existsSync(filePath)) {
             return res.sendFile(filePath);
