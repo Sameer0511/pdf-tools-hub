@@ -8,7 +8,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Render par files check karne ke liye debug logs
+// 1. Access & Permission Error Fix: Ensure uploads directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Render Debug Logs
 console.log("Current Directory:", __dirname);
 try {
     console.log("Files available:", fs.readdirSync(__dirname));
@@ -16,9 +22,9 @@ try {
     console.log("Error reading directory:", e.message);
 }
 
-// Case-sensitivity fix middleware (req.path use karne se query string (?v=2) ki problem khatam)
+// 2. Case-sensitivity & Query String Fix Middleware
 app.use((req, res, next) => {
-    if (req.path === '/style.css') {
+    if (req.path === '/style.css' || req.path === '/style.CSS') {
         const filePath = path.join(__dirname, 'style.CSS');
         if (fs.existsSync(filePath)) {
             return res.sendFile(filePath);
@@ -33,25 +39,26 @@ app.use((req, res, next) => {
     next();
 });
 
-// Main folder aur static files ke liye setup
+// Serve static files
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'Smart-Tool-Website')));
 
 const upload = multer({ dest: 'uploads/' });
 
-// Root URL par index.HTML / index.html serve karega
+// Root Route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.HTML'), (err) => {
         if (err) {
             res.sendFile(path.join(__dirname, 'index.html'), (err2) => {
                 if (err2) {
-                    res.status(404).send('index.html not found! Please check logs.');
+                    res.status(404).send('index.html not found! Check logs.');
                 }
             });
         }
     });
 });
 
+// API Route for backend PDF processing
 app.post('/api/process-pdf', upload.single('file'), (req, res) => {
     try {
         if (!req.file) {
